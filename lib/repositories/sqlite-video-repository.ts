@@ -1,6 +1,7 @@
 import type Database from "better-sqlite3";
 
 import { toDisplayId } from "@/lib/ids";
+import { NEW_VIDEO_NUMERIC_DEFAULTS, newVideoThumbnailUrl } from "@/lib/new-video-defaults";
 import type { CreateVideoInput, Video, VideoSort } from "@/lib/types/video";
 import type { ListVideosOptions, VideoRepository } from "@/lib/repositories/video-repository";
 
@@ -62,8 +63,8 @@ export class SqliteVideoRepository implements VideoRepository {
       title: input.title,
       thumbnail_url: "__PLACEHOLDER__",
       created_at: now,
-      duration: 0,
-      views: 0,
+      duration: NEW_VIDEO_NUMERIC_DEFAULTS.duration,
+      views: NEW_VIDEO_NUMERIC_DEFAULTS.views,
       tags_json: JSON.stringify(tags),
     });
 
@@ -73,7 +74,7 @@ export class SqliteVideoRepository implements VideoRepository {
     }
 
     const displayId = toDisplayId(id);
-    const thumbnail_url = `https://picsum.photos/seed/${encodeURIComponent(displayId)}/300/200`;
+    const thumbnail_url = newVideoThumbnailUrl(displayId);
 
     this.db
       .prepare(
