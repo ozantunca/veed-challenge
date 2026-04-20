@@ -1,0 +1,11 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+You can find a lot of documentation about this project in "docs" folder. Feel free to read them as needed. Start with [index.md](mdc:docs/index.md)
+
+For Next.js projects, create page components under `components` folder instead of `app`. Files in `app` should only import/export components from `components`. Page components should be name like `HomePage`, `HomeLayout` etc. to improve searchability.
+
+When you work in a branch which has name that starts with "ai/", use `./scripts/pr.sh` to create a PR for it.
