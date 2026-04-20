@@ -49,3 +49,11 @@ Format: short ADR-style notes. New decisions append to the bottom with a date.
 **Decision**: Define tables in `lib/db/schema.ts` with Drizzle; commit generated SQL under `drizzle/`; run migrations at startup via `drizzle-orm/better-sqlite3/migrator` (wrapped in `lib/db/run-migrations.ts`). Keep raw `better-sqlite3` in `VideoRepository` for now; the schema is the source of truth for new migrations.
 
 **Consequences**: Use `pnpm db:generate` after schema changes. Existing repos with an older DB are supported on first boot by using `CREATE TABLE IF NOT EXISTS` in the baseline migration (0000).
+
+## ADR-007 — Accessibility baseline for library UI (2026-04-20)
+
+**Context**: Milestone 2 targets keyboard behavior for tag chips, landmarks, motion preferences, and sustainable list rendering.
+
+**Decision**: Implement a skip link and single `<main id="main-content">` wrapper in `app/layout.tsx`; add `prefers-reduced-motion` overrides in `globals.css`; tighten light-mode hint text contrast via `--muted-foreground`; wire `TagChipInput` with `aria-describedby`, `aria-invalid`, `role="group"` + label id, visible focus on remove buttons, and Escape to clear draft or blur.
+
+**Consequences**: Destructive toasts use `role="alert"` and `aria-live="assertive"`; default toasts use `status` + `polite`. Full list + client filter grid stays non-virtualized until measured performance requires pagination or windowing (current seeded count is within comfortable DOM size).

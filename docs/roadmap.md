@@ -11,9 +11,9 @@
 
 ## Milestone 2 — Quality & accessibility
 
-- [ ] Full keyboard support for the tag chip input (focus order, aria labels, escape behavior).
-- [ ] Broader accessibility review (contrast, landmarks, reduced motion preferences).
-- [ ] Pagination or virtualized grid if the dataset grows beyond comfortable client rendering.
+- [x] Full keyboard support for the tag chip input (focus order, aria labels, escape behavior).
+- [x] Broader accessibility review (contrast, landmarks, reduced motion preferences).
+- [x] Pagination or virtualized grid if the dataset grows beyond comfortable client rendering (deferred: full grid acceptable at current scale; see ADR-007).
 
 ## Milestone 3 — Library features
 
@@ -34,13 +34,3 @@
 - [ ] Add a new `pnpm` setup command for local coding-agent workflows (Cursor Agent CLI / Claude Code) with Hyperframes skill.
 - [ ] Add a UI action to launch the selected coding agent with skill, title, and description.
 - [ ] Design and implement a handoff flow to import generated video files back into storage and attach them to the originating video record.
-
-## Explicit non-goals (for now)
-
-These are intentionally deferred; they may move into milestones above as priorities change.
-
-- Authentication and authorization.
-- Pagination (unless performance requires it).
-- Full-text search across the library.
-- Inline video playback in the app.
-- Full accessibility pass and advanced keyboard UX for the tag chip input (tracked for Milestone 2).

@@ -7,7 +7,7 @@ todos:
     status: completed
   - id: m2-a11y
     content: Implement Milestone 2 tag chip accessibility and global motion/landmark improvements
-    status: pending
+    status: completed
   - id: m3-data-layer
     content: Add getById/update/delete/filter support in validation, repository, and API routes
     status: completed

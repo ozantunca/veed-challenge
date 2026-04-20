@@ -18,7 +18,7 @@ This project uses `pnpm` so commands below will run a production build.
 
 ```sh
 pnpm i
-pnpm build
+pnpm build # important for database migration and seeding
 pnpm start
 ```
 
@@ -26,6 +26,7 @@ pnpm start
 
 - Drizzle for schema and migrations (`lib/db/schema.ts`, `pnpm db:generate`)
 - We can use a more scalable database whether it be SQL or NoSQL. I used SQLite for simplicity and also because I envisioned the product to be a standalone application.
+- Better text search. Possible fuzzy search using Typesense, Elastic, or simply Lunr.js.
 
 ## AI usage
 

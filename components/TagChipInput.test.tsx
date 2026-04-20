@@ -28,4 +28,31 @@ describe("TagChipInput", () => {
     const last = onChange.mock.calls.at(-1)?.[0] as string[];
     expect(last).toContain("a");
   });
+
+  it("clears draft on Escape without adding a tag", () => {
+    const onChange = vi.fn();
+    render(<TagChipInput id="t-tags" value={[]} onChange={onChange} />);
+    const input = screen.getByPlaceholderText(/add tags/i);
+    fireEvent.change(input, { target: { value: "draft" } });
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(onChange).not.toHaveBeenCalled();
+    expect((input as HTMLInputElement).value).toBe("");
+  });
+
+  it("exposes aria-invalid and describedby when error is set", () => {
+    render(
+      <TagChipInput
+        id="err-tags"
+        value={[]}
+        onChange={vi.fn()}
+        error="Too many tags"
+      />,
+    );
+    const input = screen.getByPlaceholderText(/add tags/i);
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    const db = input.getAttribute("aria-describedby");
+    expect(db).toContain("err-tags-hint");
+    expect(db).toContain("err-tags-error");
+    expect(screen.getByText("Too many tags")).toBeTruthy();
+  });
 });
