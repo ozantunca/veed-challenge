@@ -16,10 +16,10 @@ todos:
     status: completed
   - id: m4-storage
     content: Create storage interface with local cloud-storage implementation and gitignore entry
-    status: pending
+    status: completed
   - id: m4-attachments
     content: Add video_attachments Drizzle schema, attachment endpoints, UI integration, and tests
-    status: pending
+    status: completed
 isProject: false
 ---
 

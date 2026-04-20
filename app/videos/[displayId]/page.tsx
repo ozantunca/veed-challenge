@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { VideoDetailPage } from "@/components/VideoDetailPage";
 import { tryParseDisplayId } from "@/lib/ids";
-import { getVideoRepository } from "@/lib/repositories";
+import { getAttachmentRepository, getVideoRepository } from "@/lib/repositories";
 
 export const dynamic = "force-dynamic";
 
@@ -19,5 +19,6 @@ export default async function VideoDetailRoutePage({
   const repo = getVideoRepository();
   const video = await repo.getById(id);
   if (!video) notFound();
-  return <VideoDetailPage video={video} />;
+  const attachments = await getAttachmentRepository().listByVideoId(id);
+  return <VideoDetailPage video={video} attachments={attachments} />;
 }

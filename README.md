@@ -2,6 +2,10 @@
 
 My implementation process for the challenge. This README is written by me.
 
+## Demo
+
+View the running version on [veed.ozantunca.com](https://veed.ozantunca.com).
+
 ## Tech stack
 
 - Next.js
@@ -11,6 +15,7 @@ My implementation process for the challenge. This README is written by me.
 - Drizzle ORM for DB schema management
 - Shadcn and Tailwind for UI
 - Zod for schema validation
+- a folder named `cloud-storage` for storing video files along with an interface called `MediaStorage` so the folder can later be swapped for an actual cloud storage.
 
 ## Setup instructions
 
@@ -18,15 +23,19 @@ This project uses `pnpm` so commands below will run a production build.
 
 ```sh
 pnpm i
-pnpm build # important for database migration and seeding
+pnpm build # important for database migration
+pnpm seed # for first one only
 pnpm start
 ```
+
+Blob storage for uploaded video files defaults to `./cloud-storage` (gitignored). Override with **`MEDIA_STORAGE_ROOT`** (absolute or project-relative path) if needed.
 
 ## Future improvements
 
 - Drizzle for schema and migrations (`lib/db/schema.ts`, `pnpm db:generate`)
 - We can use a more scalable database whether it be SQL or NoSQL. I used SQLite for simplicity and also because I envisioned the product to be a standalone application.
-- Better text search. Possible fuzzy search using Typesense, Elastic, or simply Lunr.js.
+- Better text search. Possible fuzzy search using Typesense, Elastic, or simply Lunr.js. Also would trigger search requests while typing instead of an explicit "apply" button.
+- I'm not totally happy with filter UI. I think it takes up too much space, especially on mobile. I would try to make it more minimal and hide it on mobile behind a button.
 
 ## AI usage
 

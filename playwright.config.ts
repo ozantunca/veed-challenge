@@ -5,6 +5,7 @@ import { defineConfig, devices } from "@playwright/test";
 const E2E_PORT = "3333";
 const E2E_ORIGIN = `http://127.0.0.1:${E2E_PORT}`;
 const E2E_DB_FILE = path.resolve(process.cwd(), "data", "e2e-videos.db");
+const E2E_STORAGE_DIR = path.resolve(process.cwd(), "data", "e2e-cloud-storage");
 
 export default defineConfig({
   globalSetup: "./e2e/global-setup.ts",
@@ -30,6 +31,7 @@ export default defineConfig({
     env: {
       ...process.env,
       VIDEO_DB_PATH: E2E_DB_FILE,
+      MEDIA_STORAGE_ROOT: E2E_STORAGE_DIR,
     },
   },
 });

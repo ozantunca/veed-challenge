@@ -22,6 +22,7 @@ export function getDb(): Database.Database {
       : path.join(dataDir, "videos.db");
     const db = new Database(dbPath);
     db.pragma("journal_mode = WAL");
+    db.pragma("foreign_keys = ON");
     migrate(db);
     globalForDb.videoDb = db;
   }

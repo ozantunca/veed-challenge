@@ -47,3 +47,5 @@ export type UpdateVideoBody = z.infer<typeof updateVideoBodySchema>;
 export const updateVideoFormSchema = updateVideoBodySchema;
 
 export const videoIdParamSchema = z.coerce.number().int().positive();
+
+export const attachmentIdParamSchema = z.coerce.number().int().positive();

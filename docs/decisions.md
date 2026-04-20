@@ -57,3 +57,11 @@ Format: short ADR-style notes. New decisions append to the bottom with a date.
 **Decision**: Implement a skip link and single `<main id="main-content">` wrapper in `app/layout.tsx`; add `prefers-reduced-motion` overrides in `globals.css`; tighten light-mode hint text contrast via `--muted-foreground`; wire `TagChipInput` with `aria-describedby`, `aria-invalid`, `role="group"` + label id, visible focus on remove buttons, and Escape to clear draft or blur.
 
 **Consequences**: Destructive toasts use `role="alert"` and `aria-live="assertive"`; default toasts use `status` + `polite`. Full list + client filter grid stays non-virtualized until measured performance requires pagination or windowing (current seeded count is within comfortable DOM size).
+
+## ADR-008 — Local object storage for video attachments (2026-04-20)
+
+**Context**: Milestone 4 needs multiple files per video and a swappable persistence layer before cloud backends.
+
+**Decision**: Store blobs under `./cloud-storage` by default (override with `MEDIA_STORAGE_ROOT`); implement a `MediaStorage` port (`upload`, `download`, `list`, `remove`) in `lib/storage/` with `LocalFsStorage`. Persist metadata in `video_attachments` (Drizzle + migration) with `ON DELETE CASCADE` from `videos`; enable `PRAGMA foreign_keys = ON` in `getDb`. On video delete, remove files from storage first, then delete the video row. API: `GET/POST /api/videos/[id]/attachments`, `DELETE .../attachments/[attachmentId]`, `GET .../attachments/[attachmentId]/file`.
+
+**Consequences**: Git ignores `/cloud-storage`; e2e uses `data/e2e-cloud-storage`. Swap `LocalFsStorage` for S3/R2 by changing `getMediaStorage()` only.

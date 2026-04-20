@@ -40,3 +40,7 @@ yarn-error.log*
 /data/*.db
 /data/*.db-wal
 /data/*.db-shm
+/data/e2e-cloud-storage
+
+# local blob storage (swap with cloud in production)
+/cloud-storage

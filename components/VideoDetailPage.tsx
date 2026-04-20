@@ -1,12 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { VideoAttachmentsPanel } from "@/components/VideoAttachmentsPanel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatVideoDate } from "@/lib/format-date";
+import type { VideoAttachment } from "@/lib/types/video-attachment";
 import type { Video } from "@/lib/types/video";
 
-export function VideoDetailPage({ video }: { video: Video }) {
+export function VideoDetailPage({
+  video,
+  attachments,
+}: {
+  video: Video;
+  attachments: VideoAttachment[];
+}) {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <Link
@@ -68,8 +76,16 @@ export function VideoDetailPage({ video }: { video: Video }) {
         </div>
       </div>
 
-      <div className="mt-10 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-        Attachments and media files will appear here in a future update.
+      <div className="mt-10">
+        <h2 className="text-sm font-medium text-muted-foreground">
+          Video files
+        </h2>
+        <div className="mt-3">
+          <VideoAttachmentsPanel
+            videoId={video.id}
+            initialAttachments={attachments}
+          />
+        </div>
       </div>
     </div>
   );

@@ -8,7 +8,8 @@ import {
   jsonServerError,
   zodErrorToFields,
 } from "@/lib/api/response";
-import { getVideoRepository } from "@/lib/repositories";
+import { getAttachmentRepository, getVideoRepository } from "@/lib/repositories";
+import { getMediaStorage } from "@/lib/storage";
 import { videoIdParamSchema } from "@/lib/validation/video";
 
 export async function DeleteVideoRoute(
@@ -37,6 +38,13 @@ export async function DeleteVideoRoute(
     }
 
     const displayId = existing.displayId;
+    const attRepo = getAttachmentRepository();
+    const attachments = await attRepo.listByVideoId(parsedId.data);
+    const storage = getMediaStorage();
+    for (const a of attachments) {
+      await storage.remove(a.storageKey);
+    }
+
     const deleted = await repo.delete(parsedId.data);
     if (!deleted) {
       return jsonNotFound({

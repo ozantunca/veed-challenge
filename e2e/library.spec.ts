@@ -48,5 +48,6 @@ test.describe("Video library", () => {
     await firstCard.getByRole("link", { name: "View" }).click();
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
     await expect(page.getByTestId("video-description")).toBeVisible();
+    await expect(page.getByTestId("video-attachments")).toBeVisible();
   });
 });

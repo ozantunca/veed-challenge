@@ -15,6 +15,13 @@
       "when": 1776695646556,
       "tag": "0001_ancient_midnight",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1776696582609,
+      "tag": "0002_wild_supernaut",
+      "breakpoints": true
     }
   ]
 }

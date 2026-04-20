@@ -22,10 +22,10 @@
 
 ## Milestone 4 — Media features
 
-- [ ] Add support for attaching multiple video files to a single video record.
-- [ ] Store attached files under a local `cloud-storage` folder (gitignored).
-- [ ] Introduce a storage interface with async methods (`list`, `download`, `upload`) implemented against `cloud-storage`.
-- [ ] Keep app code calling only the storage interface so a real cloud backend can replace local storage later without broad refactors.
+- [x] Add support for attaching multiple video files to a single video record.
+- [x] Store attached files under a local `cloud-storage` folder (gitignored).
+- [x] Introduce a storage interface with async methods (`list`, `download`, `upload`) implemented against `cloud-storage`.
+- [x] Keep app code calling only the storage interface so a real cloud backend can replace local storage later without broad refactors.
 
 ## Milestone 5 — Personal creation workflow
 
