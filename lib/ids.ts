@@ -25,3 +25,12 @@ export function fromDisplayId(s: string): number {
   }
   return n;
 }
+
+/** Returns `null` instead of throwing for invalid `v-…` strings. */
+export function tryParseDisplayId(s: string): number | null {
+  try {
+    return fromDisplayId(s);
+  } catch {
+    return null;
+  }
+}

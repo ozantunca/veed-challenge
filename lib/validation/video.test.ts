@@ -17,4 +17,9 @@ describe("createVideoBodySchema", () => {
   it("rejects empty title", () => {
     expect(() => createVideoBodySchema.parse({ title: "" })).toThrow();
   });
+
+  it("defaults missing description to empty string", () => {
+    const parsed = createVideoBodySchema.parse({ title: "Hello" });
+    expect(parsed.description).toBe("");
+  });
 });

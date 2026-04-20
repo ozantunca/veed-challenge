@@ -17,8 +17,16 @@ export function jsonCreated<T>(data: T, init?: ResponseInit): NextResponse<T> {
   return NextResponse.json(data, { status: 201, ...init });
 }
 
+export function jsonNoContent(init?: ResponseInit): NextResponse {
+  return new NextResponse(null, { status: 204, ...init });
+}
+
 export function jsonBadRequest(body: ApiErrorBody): NextResponse<ApiErrorBody> {
   return NextResponse.json(body, { status: 400 });
+}
+
+export function jsonNotFound(body: ApiErrorBody): NextResponse<ApiErrorBody> {
+  return NextResponse.json(body, { status: 404 });
 }
 
 export function jsonServerError(body: ApiErrorBody): NextResponse<ApiErrorBody> {

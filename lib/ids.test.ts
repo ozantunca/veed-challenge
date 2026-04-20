@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { fromDisplayId, toDisplayId } from "@/lib/ids";
+import { fromDisplayId, toDisplayId, tryParseDisplayId } from "@/lib/ids";
 
 describe("toDisplayId", () => {
   it("pads to at least 3 digits", () => {
@@ -11,6 +11,17 @@ describe("toDisplayId", () => {
 
   it("does not truncate beyond 999", () => {
     expect(toDisplayId(1000)).toBe("v-1000");
+  });
+});
+
+describe("tryParseDisplayId", () => {
+  it("returns null for invalid strings", () => {
+    expect(tryParseDisplayId("bad")).toBeNull();
+    expect(tryParseDisplayId("v-")).toBeNull();
+  });
+
+  it("matches fromDisplayId for valid ids", () => {
+    expect(tryParseDisplayId("v-007")).toBe(7);
   });
 });
 

@@ -17,8 +17,8 @@
 
 ## Milestone 3 — Library features
 
-- [ ] Edit and delete videos.
-- [ ] Search and filter (by title, tag, date range).
+- [x] Edit and delete videos.
+- [x] Search and filter (by title, tag, date range).
 
 ## Milestone 4 — Media features
 
@@ -30,7 +30,7 @@
 ## Milestone 5 — Personal creation workflow
 
 - [ ] Reframe the app from "video library only" to a personal video creation + management tool.
-- [ ] Add a `description` field to the video schema and UI so agent prompts have richer context.
+- [x] Add a `description` field to the video schema and UI so agent prompts have richer context.
 - [ ] Add a new `pnpm` setup command for local coding-agent workflows (Cursor Agent CLI / Claude Code) with Hyperframes skill.
 - [ ] Add a UI action to launch the selected coding agent with skill, title, and description.
 - [ ] Design and implement a handoff flow to import generated video files back into storage and attach them to the originating video record.
@@ -42,6 +42,5 @@ These are intentionally deferred; they may move into milestones above as priorit
 - Authentication and authorization.
 - Pagination (unless performance requires it).
 - Full-text search across the library.
-- Edit/delete flows.
 - Inline video playback in the app.
 - Full accessibility pass and advanced keyboard UX for the tag chip input (tracked for Milestone 2).

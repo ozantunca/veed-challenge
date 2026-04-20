@@ -40,4 +40,13 @@ test.describe("Video library", () => {
       page.getByTestId("video-card").filter({ hasText: unique }).getByTestId("video-tag").filter({ hasText: "regression" }),
     ).toBeVisible();
   });
+
+  test("opens video detail from the grid", async ({ page }) => {
+    await page.goto("/?sort=newest");
+    const firstCard = page.getByTestId("video-card").first();
+    const title = await firstCard.getByTestId("video-title").innerText();
+    await firstCard.getByRole("link", { name: "View" }).click();
+    await expect(page.getByRole("heading", { name: title })).toBeVisible();
+    await expect(page.getByTestId("video-description")).toBeVisible();
+  });
 });

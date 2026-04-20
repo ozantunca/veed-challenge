@@ -21,13 +21,39 @@ describe("SqliteVideoRepository", () => {
 
     const created = await repo.create({
       title: "E2E unit video",
+      description: "unit test clip",
       tags: ["alpha", "beta"],
     });
     expect(created.displayId).toBe("v-051");
     expect(created.tags).toEqual(["alpha", "beta"]);
     expect(created.thumbnail_url).toContain("v-051");
+    expect(created.description).toBe("unit test clip");
+
+    const fetched = await repo.getById(created.id);
+    expect(fetched?.title).toBe("E2E unit video");
+
+    const titleFiltered = await repo.list({
+      sort: "newest",
+      titleContains: "unit",
+    });
+    expect(titleFiltered.some((v) => v.id === created.id)).toBe(true);
+
+    const tagFiltered = await repo.list({ sort: "newest", tag: "alpha" });
+    expect(tagFiltered.some((v) => v.id === created.id)).toBe(true);
+
+    const updated = await repo.update(created.id, {
+      title: "Updated title",
+      description: "new desc",
+      tags: ["gamma"],
+    });
+    expect(updated?.title).toBe("Updated title");
+    expect(updated?.description).toBe("new desc");
+
+    const deleted = await repo.delete(created.id);
+    expect(deleted).toBe(true);
+    expect(await repo.getById(created.id)).toBeNull();
 
     const after = await repo.list({ sort: "newest" });
-    expect(after[0]?.title).toBe("E2E unit video");
+    expect(after[0]?.title).not.toBe("Updated title");
   });
 });

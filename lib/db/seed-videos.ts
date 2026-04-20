@@ -9,6 +9,7 @@ type SeedFile = {
   videos: Array<{
     id: string;
     title: string;
+    description?: string;
     thumbnail_url: string;
     created_at: string;
     duration: number;
@@ -38,8 +39,8 @@ export function seedVideosFromJson(
   db.prepare("DELETE FROM videos").run();
 
   const insert = db.prepare(`
-    INSERT INTO videos (id, title, thumbnail_url, created_at, duration, views, tags_json)
-    VALUES (@id, @title, @thumbnail_url, @created_at, @duration, @views, @tags_json)
+    INSERT INTO videos (id, title, description, thumbnail_url, created_at, duration, views, tags_json)
+    VALUES (@id, @title, @description, @thumbnail_url, @created_at, @duration, @views, @tags_json)
   `);
 
   const insertMany = db.transaction(() => {
@@ -48,6 +49,7 @@ export function seedVideosFromJson(
       insert.run({
         id,
         title: v.title,
+        description: v.description?.trim() ?? "",
         thumbnail_url: v.thumbnail_url,
         created_at: v.created_at,
         duration: v.duration,

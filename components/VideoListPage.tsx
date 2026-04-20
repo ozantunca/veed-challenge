@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { VideoDeleteButton } from "@/components/VideoDeleteButton";
+import { VideoListFilters } from "@/components/VideoListFilters";
 import { VideoSortDropdown } from "@/components/VideoSortDropdown";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +11,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -37,6 +40,10 @@ export function VideoListPage({ videos }: { videos: Video[] }) {
           </Button>
         </div>
       </div>
+
+      <Suspense fallback={null}>
+        <VideoListFilters />
+      </Suspense>
 
       {videos.length === 0 ? (
         <div className="rounded-xl border border-dashed p-10 text-center">
@@ -69,11 +76,14 @@ export function VideoListPage({ videos }: { videos: Video[] }) {
                 />
               </div>
               <CardHeader className="gap-2">
-                <CardTitle
-                  className="line-clamp-2 text-base"
-                  data-testid="video-title"
-                >
-                  {v.title}
+                <CardTitle className="text-base">
+                  <Link
+                    href={`/videos/${v.displayId}`}
+                    data-testid="video-title"
+                    className="line-clamp-2 hover:underline"
+                  >
+                    {v.title}
+                  </Link>
                 </CardTitle>
                 <CardDescription>
                   <span data-testid="video-created-at">
@@ -100,6 +110,12 @@ export function VideoListPage({ videos }: { videos: Video[] }) {
                   ))
                 )}
               </CardContent>
+              <CardFooter className="justify-between border-t pt-6">
+                <Button asChild variant="secondary" size="sm">
+                  <Link href={`/videos/${v.displayId}`}>View</Link>
+                </Button>
+                <VideoDeleteButton videoId={v.id} title={v.title} />
+              </CardFooter>
             </Card>
           ))}
         </div>

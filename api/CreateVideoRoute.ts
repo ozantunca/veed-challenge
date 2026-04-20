@@ -35,6 +35,7 @@ export async function CreateVideoRoute(req: NextRequest) {
     const repo = getVideoRepository();
     const video = await repo.create({
       title: parsed.data.title,
+      description: parsed.data.description,
       tags: parsed.data.tags ?? [],
     });
 

@@ -12,24 +12,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { ApiErrorBody } from "@/lib/api/response";
-import { createVideoFormSchema } from "@/lib/validation/video";
+import { updateVideoFormSchema } from "@/lib/validation/video";
+import type { Video } from "@/lib/types/video";
 import type { z } from "zod";
 
 import { useToastStore } from "@/lib/stores/toast-store";
 
-type FormValues = z.input<typeof createVideoFormSchema>;
+type FormValues = z.input<typeof updateVideoFormSchema>;
 
-export function VideoCreatePage() {
+export function VideoEditPage({ video }: { video: Video }) {
   const router = useRouter();
   const pushToast = useToastStore((s) => s.push);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(createVideoFormSchema),
+    resolver: zodResolver(updateVideoFormSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      tags: [],
+      title: video.title,
+      description: video.description,
+      tags: video.tags,
     },
   });
 
@@ -43,8 +44,8 @@ export function VideoCreatePage() {
 
   const onSubmit = handleSubmit(async (data) => {
     setSubmitError(null);
-    const res = await fetch("/api/videos", {
-      method: "POST",
+    const res = await fetch(`/api/videos/${video.id}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: data.title,
@@ -59,48 +60,42 @@ export function VideoCreatePage() {
       if (err?.error?.fields) {
         for (const [key, message] of Object.entries(err.error.fields)) {
           if (key === "title") setError("title", { message });
-          else if (key === "description")
-            setError("description", { message });
+          else if (key === "description") setError("description", { message });
           else if (key === "tags" || key.startsWith("tags."))
             setError("tags", { message });
         }
       }
-      setSubmitError(err?.error?.message ?? "Could not create video");
+      setSubmitError(err?.error?.message ?? "Could not save video");
       return;
     }
 
     pushToast({
-      title: "Video created",
+      title: "Video updated",
       description: data.title,
     });
-    router.push("/?sort=newest");
+    router.push(`/videos/${video.displayId}`);
     router.refresh();
   });
 
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
-      <div className="mb-8">
-        <Link
-          href="/"
-          className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-        >
-          ← Back to library
-        </Link>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight">
-          New video
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Title is required. Tags are optional. Other fields use defaults.
-        </p>
-      </div>
+      <Link
+        href={`/videos/${video.displayId}`}
+        className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+      >
+        ← Back to video
+      </Link>
+      <h1 className="mt-4 text-3xl font-semibold tracking-tight">Edit video</h1>
+      <p className="text-sm text-muted-foreground">
+        Update title, description, and tags.
+      </p>
 
-      <form className="space-y-6" onSubmit={onSubmit} noValidate>
+      <form className="mt-8 space-y-6" onSubmit={onSubmit} noValidate>
         <div className="space-y-2">
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="edit-title">Title</Label>
           <Input
-            id="title"
+            id="edit-title"
             autoComplete="off"
-            placeholder="e.g. My tutorial"
             aria-invalid={!!errors.title}
             {...register("title")}
           />
@@ -110,12 +105,12 @@ export function VideoCreatePage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="edit-description">Description</Label>
           <Textarea
-            id="description"
-            rows={4}
-            placeholder="Optional notes or outline"
+            id="edit-description"
+            rows={5}
             aria-invalid={!!errors.description}
+            placeholder="Optional notes or script outline"
             {...register("description")}
           />
           {errors.description?.message ? (
@@ -130,7 +125,7 @@ export function VideoCreatePage() {
           control={control}
           render={({ field }) => (
             <TagChipInput
-              id="tags"
+              id="edit-tags"
               value={Array.isArray(field.value) ? field.value : []}
               onChange={field.onChange}
               error={errors.tags?.message as string | undefined}
@@ -150,10 +145,10 @@ export function VideoCreatePage() {
 
         <div className="flex items-center gap-3">
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating…" : "Create video"}
+            {isSubmitting ? "Saving…" : "Save changes"}
           </Button>
           <Button asChild variant="outline" type="button">
-            <Link href="/">Cancel</Link>
+            <Link href={`/videos/${video.displayId}`}>Cancel</Link>
           </Button>
         </div>
       </form>

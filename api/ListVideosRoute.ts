@@ -6,12 +6,14 @@ import {
   jsonServerError,
   zodErrorToFields,
 } from "@/lib/api/response";
+import { parseListQuery } from "@/lib/parse-list-query";
 import { getVideoRepository } from "@/lib/repositories";
 import { videoSortSchema } from "@/lib/validation/video";
 
 export async function ListVideosRoute(req: NextRequest) {
   try {
-    const sortParam = req.nextUrl.searchParams.get("sort") ?? "newest";
+    const sp = req.nextUrl.searchParams;
+    const sortParam = sp.get("sort") ?? "newest";
     const parsedSort = videoSortSchema.safeParse(sortParam);
     if (!parsedSort.success) {
       return jsonBadRequest({
@@ -23,8 +25,16 @@ export async function ListVideosRoute(req: NextRequest) {
       });
     }
 
+    const listOptions = parseListQuery({
+      sort: sortParam,
+      title: sp.get("title") ?? undefined,
+      tag: sp.get("tag") ?? undefined,
+      from: sp.get("from") ?? undefined,
+      to: sp.get("to") ?? undefined,
+    });
+
     const repo = getVideoRepository();
-    const videos = await repo.list({ sort: parsedSort.data });
+    const videos = await repo.list(listOptions);
     return jsonOk({ videos });
   } catch (e) {
     console.error(e);
