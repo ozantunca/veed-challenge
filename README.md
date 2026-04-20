@@ -8,6 +8,7 @@ My implementation process for the challenge. This README is written by me.
 - TypeScript
 - Node.js - through Next.js API Routes
 - SQLite - easy to setup, to backup, and to port data for an MVP. I would use something else if scale was a near-term concern
+- Drizzle ORM for DB schema management
 - Shadcn and Tailwind for UI
 - Zod for schema validation
 
@@ -18,13 +19,12 @@ This project uses `pnpm` so commands below will run a production build.
 ```sh
 pnpm i
 pnpm build
-pnpm seed # first run only
 pnpm start
 ```
 
 ## Future improvements
 
-- Probably a more structured database migration technique. Perhaps using something like Prisma
+- Drizzle for schema and migrations (`lib/db/schema.ts`, `pnpm db:generate`)
 - We can use a more scalable database whether it be SQL or NoSQL. I used SQLite for simplicity and also because I envisioned the product to be a standalone application.
 
 ## AI usage

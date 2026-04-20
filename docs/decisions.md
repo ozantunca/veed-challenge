@@ -41,3 +41,11 @@ Format: short ADR-style notes. New decisions append to the bottom with a date.
 **Decision**: Centralize Zod schemas and reuse them in Route Handlers and `react-hook-form` resolvers.
 
 **Consequences**: Single source of truth; fewer mismatches between client and server validation.
+
+## ADR-006 — Drizzle ORM for schema and migrations (2026-04-20)
+
+**Context**: `CREATE TABLE IF NOT EXISTS` in code does not version migrations; schema evolution needs a repeatable path.
+
+**Decision**: Define tables in `lib/db/schema.ts` with Drizzle; commit generated SQL under `drizzle/`; run migrations at startup via `drizzle-orm/better-sqlite3/migrator` (wrapped in `lib/db/run-migrations.ts`). Keep raw `better-sqlite3` in `VideoRepository` for now; the schema is the source of truth for new migrations.
+
+**Consequences**: Use `pnpm db:generate` after schema changes. Existing repos with an older DB are supported on first boot by using `CREATE TABLE IF NOT EXISTS` in the baseline migration (0000).
