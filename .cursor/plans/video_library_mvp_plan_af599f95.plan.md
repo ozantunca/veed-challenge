@@ -10,10 +10,10 @@ todos:
     status: completed
   - id: build-sqlite-repository
     content: Set up SQLite (better-sqlite3), seed from videos.json with AUTOINCREMENT starting after last seed ID, and implement a typed VideoRepository interface
-    status: pending
+    status: completed
   - id: build-api-contract
     content: Implement GET /api/videos (list + sort) and POST /api/videos (create) with shared Zod schemas and a typed error contract
-    status: pending
+    status: completed
   - id: build-ui-flows
     content: Implement list page (Server Component) with sort dropdown and create page (client form with react-hook-form + custom chip tag input), wire revalidatePath after create
     status: completed
@@ -31,7 +31,7 @@ isProject: false
 - **UI stack:** Tailwind + shadcn/ui. Page components under `@/components/...` (e.g. `@/components/VideoListPage.tsx`); files in `app/` only import/export them.
 - **Data fetching:** Server Components for list page; client form for create calling a POST route; `revalidatePath('/')` + `router.refresh()` after successful create. No react-query for MVP.
 - **State:** Zustand scoped narrowly to a toast/notification store. Rationale documented in `docs/decisions.md`.
-- **Persistence:** SQLite via `better-sqlite3` behind a `VideoRepository` TypeScript interface. DB file stored at `./data/videos.db`, seeded once from [data/videos.json](data/videos.json) on first boot.
+- **Persistence:** SQLite via `better-sqlite3` behind a `VideoRepository` TypeScript interface. DB files under `./data/` are gitignored; run **`pnpm seed`** to load [data/videos.json](data/videos.json) into `./data/videos.db` (see `lib/db/seed-videos.ts`). Runtime opens the DB and runs schema **migration** only (`lib/db/migrate.ts`).
 - **IDs:** SQLite `INTEGER PRIMARY KEY AUTOINCREMENT`. Seed inserts preserve numeric IDs 1..50 so the sequence continues at 51. User-facing format is `v-${id.toString().padStart(3, '0')}` (left-padded, minimum 3 digits, grows naturally past 999).
 - **Validation:** Zod schemas in `@/lib/validation/video.ts` reused by API routes and by the client form via `@hookform/resolvers/zod`.
 - **Error contract (TypeScript-enforced):**
@@ -39,6 +39,7 @@ isProject: false
   type ApiError = { error: { code: string; message: string; fields?: Record<string, string> } }
   ```
   All non-2xx responses conform to this shape; shared response helpers enforce it at the type level.
+- **API response helpers** (`@/lib/api/response.ts`): `jsonOk`, `jsonCreated`, `jsonBadRequest`, `jsonServerError` (plus Zod field mapping helpers).
 - **Forms:** `react-hook-form` + Zod resolver on the create page.
 - **Tag input UX:** custom chip input composed from shadcn `Input` + `Badge` (Enter/comma commits, backspace removes last). Keyboard-accessibility polish is deferred to roadmap.
 - **Sort UX:** shadcn `DropdownMenu` with options "Newest first" / "Oldest first", state stored in URL search params (`?sort=newest|oldest`) so the list page can read it as a Server Component prop and e2e tests can deep-link.
@@ -57,7 +58,7 @@ Auth, pagination, search, edit/delete, video upload/playback, full accessibility
 
 ## Default values for new videos
 
-- `thumbnail_url`: `https://picsum.photos/seed/v-${paddedId}/300/200`
+- `thumbnail_url`: `https://picsum.photos/seed/v-${paddedId}/300/200` (implemented as `newVideoThumbnailUrl(displayId)` in `@/lib/new-video-defaults.ts`)
 - `created_at`: `new Date().toISOString()`
 - `duration`: `0`
 - `views`: `0`
@@ -74,7 +75,7 @@ Auth, pagination, search, edit/delete, video upload/playback, full accessibility
 - Two Vitest configs:
   - `vitest.config.ts` → node env for `lib/**`, `app/api/**`, repository tests.
   - `vitest.components.config.ts` → jsdom env for component tests under `components/**`.
-- Playwright config with `webServer: { command: 'pnpm build && pnpm start', ... }` (or `pnpm dev` in CI-less local mode).
+- Playwright config with `webServer` hook (e.g. `pnpm seed && pnpm dev` for e2e DB + dev server on a dedicated port).
 
 ### 2. Document product and roadmap
 
@@ -101,10 +102,7 @@ Write docs right after scaffolding so decisions are captured before they drift.
     tags_json TEXT NOT NULL DEFAULT '[]'
   )
   ```
-- Seeding strategy (idempotent):
-  - On first boot, if `videos` is empty, parse [data/videos.json](data/videos.json), convert each `v-0XX` to its numeric ID, and `INSERT` with explicit IDs.
-  - After seed, run `UPDATE sqlite_sequence SET seq = 50 WHERE name = 'videos'` so next auto-increment is `51`.
-  - Subsequent boots detect an already-seeded DB and skip.
+- **Seeding:** `pnpm seed` (`scripts/seed.ts`) runs migration then replaces `videos` rows from [data/videos.json](data/videos.json) with explicit ids and syncs `sqlite_sequence` (`lib/db/seed-videos.ts`).
 - `VideoRepository` interface (rough shape):
 
   ```
@@ -120,14 +118,15 @@ Write docs right after scaffolding so decisions are captured before they drift.
 
 ### 4. API layer
 
+- Route modules live under `@/api/` with searchable names (e.g. `ListVideosRoute`, `CreateVideoRoute`); `app/api/videos/route.ts` re-exports `GET` / `POST`.
 - `GET /api/videos?sort=newest|oldest` → returns `{ videos: Video[] }`; invalid sort value → 400 with `ApiError`.
 - `POST /api/videos` → validates body with shared Zod schema, applies defaults, calls repository, returns created `Video` on 201. On validation failure returns 400 with `ApiError` including `fields`.
-- Shared helpers: `ok()`, `created()`, `badRequest()`, `serverError()` in `@/lib/api/response.ts` with types that force the `ApiError` shape.
+- Shared helpers: `jsonOk`, `jsonCreated`, `jsonBadRequest`, `jsonServerError` in `@/lib/api/response.ts` with types that force the `ApiError` shape.
 - API routes call `revalidatePath('/')` on successful POST.
 
 ### 5. Frontend experience
 
-- `@/components/VideoListPage.tsx` (Server Component): reads `sort` from search params, calls repository directly, renders grid of shadcn `Card`s with title, formatted `created_at`, and `Badge` tags. `Suspense` boundary with skeleton grid for loading.
+- `@/components/VideoListPage.tsx`: grid of shadcn `Card`s with title, formatted `created_at`, and `Badge` tags; `app/page.tsx` loads data and passes `videos`. `app/loading.tsx` skeleton; sort `Suspense` around `VideoSortDropdown`.
 - Sort dropdown: client subcomponent using shadcn `DropdownMenu`, updates URL via `router.push('/?sort=...')`.
 - `@/components/VideoCreatePage.tsx` (client): `react-hook-form` + Zod resolver. Fields: `title` (required), `tags` (optional, via custom chip input). On submit → POST `/api/videos` → on 201, `router.push('/?sort=newest')` and `router.refresh()`. Inline errors from `ApiError.fields` mapped to form state.
 - Custom chip input: `@/components/TagChipInput.tsx` built on shadcn `Input` + `Badge`. Enter or comma commits a tag; click-remove on each chip.
@@ -138,16 +137,15 @@ Write docs right after scaffolding so decisions are captured before they drift.
 
 - Unit (node):
   - `toDisplayId` / `fromDisplayId` padding and parsing.
-  - Default-value generator for new videos.
-  - Sort helper (if any additional ordering logic lives in TS).
-  - Zod schema happy/error cases.
+  - Default-value helpers (`@/lib/new-video-defaults.ts`) and Zod schema cases.
+  - `parseSort` (`@/lib/parse-sort.ts`).
   - `SqliteVideoRepository` against an in-memory `better-sqlite3` instance (seed + list + create).
 - Unit (jsdom):
   - `TagChipInput` add/remove behavior.
-  - Sort dropdown updates URL.
+  - `VideoSortDropdown` updates URL via `router.push` (Next navigation mocked).
 - E2E (Playwright):
   - Browse and sort: visit `/`, toggle sort, assert first card changes.
-  - Create: visit `/new`, fill title + two tags, submit, land on list with new card visible as first item when sorted newest.
+  - Create: visit `/new`, fill title + **two** tags, submit, land on list with new card visible when sorted newest; assert both tags on the new card.
 
 ## Architecture Snapshot
 
@@ -160,7 +158,7 @@ flowchart LR
   serverComp --> repo[VideoRepository]
   api --> repo
   repo --> sqlite[SqliteDb]
-  seed[SeedVideosJson] --> sqlite
+  seed[pnpmSeed] --> sqlite
   api --> revalidate[revalidatePath]
   revalidate --> serverComp
 ```

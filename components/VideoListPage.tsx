@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatVideoDate } from "@/lib/format-date";
 import type { Video } from "@/lib/types/video";
 
-export function VideoListView({ videos }: { videos: Video[] }) {
+export function VideoListPage({ videos }: { videos: Video[] }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
