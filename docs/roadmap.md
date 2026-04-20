@@ -19,13 +19,21 @@
 
 - [ ] Edit and delete videos.
 - [ ] Search and filter (by title, tag, date range).
-- [ ] Optional authentication and multi-user libraries.
 
 ## Milestone 4 — Media features
 
-- [ ] Upload or attach real media references (not just thumbnails).
-- [ ] Inline playback or deep links to external players.
-- [ ] Import/export (CSV/JSON) for library portability.
+- [ ] Add support for attaching multiple video files to a single video record.
+- [ ] Store attached files under a local `cloud-storage` folder (gitignored).
+- [ ] Introduce a storage interface with async methods (`list`, `download`, `upload`) implemented against `cloud-storage`.
+- [ ] Keep app code calling only the storage interface so a real cloud backend can replace local storage later without broad refactors.
+
+## Milestone 5 — Personal creation workflow
+
+- [ ] Reframe the app from "video library only" to a personal video creation + management tool.
+- [ ] Add a `description` field to the video schema and UI so agent prompts have richer context.
+- [ ] Add a new `pnpm` setup command for local coding-agent workflows (Cursor Agent CLI / Claude Code) with Hyperframes skill.
+- [ ] Add a UI action to launch the selected coding agent with skill, title, and description.
+- [ ] Design and implement a handoff flow to import generated video files back into storage and attach them to the originating video record.
 
 ## Explicit non-goals (for now)
 
@@ -35,6 +43,5 @@ These are intentionally deferred; they may move into milestones above as priorit
 - Pagination (unless performance requires it).
 - Full-text search across the library.
 - Edit/delete flows.
-- Video upload, transcoding, or hosting.
 - Inline video playback in the app.
 - Full accessibility pass and advanced keyboard UX for the tag chip input (tracked for Milestone 2).

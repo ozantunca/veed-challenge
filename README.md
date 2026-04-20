@@ -24,6 +24,9 @@ pnpm start
 
 ## Future improvements
 
+- Probably a more structured database migration technique. Perhaps using something like Prisma
+- We can use a more scalable database whether it be SQL or NoSQL. I used SQLite for simplicity and also because I envisioned the product to be a standalone application.
+
 ## AI usage
 
 I use AI heavily day to day. In fact, my template project does no include any library but only - `.cursor` folder with rules and skills
