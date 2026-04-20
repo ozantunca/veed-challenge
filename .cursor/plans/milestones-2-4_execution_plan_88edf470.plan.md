@@ -4,16 +4,16 @@ overview: Deliver Milestones 2-4 with a simple-first UX and pagination-first sca
 todos:
   - id: drizzle-foundation
     content: Migrate from manual migrate.ts to Drizzle ORM schema + versioned migrations
-    status: pending
+    status: completed
   - id: m2-a11y
     content: Implement Milestone 2 tag chip accessibility and global motion/landmark improvements
     status: pending
   - id: m3-data-layer
     content: Add getById/update/delete/filter support in validation, repository, and API routes
-    status: pending
+    status: completed
   - id: m3-ui
     content: "Build simple-first UX: detail page, edit page, filter toolbar, per-card delete"
-    status: pending
+    status: completed
   - id: m4-storage
     content: Create storage interface with local cloud-storage implementation and gitignore entry
     status: pending
