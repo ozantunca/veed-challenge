@@ -24,11 +24,20 @@ test.describe("Video library", () => {
     const unique = `PW Test ${Date.now()}`;
     await page.goto("/new");
     await page.getByLabel(/title/i).fill(unique);
-    await page.getByPlaceholder(/add tags/i).fill("e2e");
-    await page.getByPlaceholder(/add tags/i).press("Enter");
+    const tagInput = page.getByPlaceholder(/add tags/i);
+    await tagInput.fill("e2e");
+    await tagInput.press("Enter");
+    await tagInput.fill("regression");
+    await tagInput.press("Enter");
     await page.getByRole("button", { name: /create video/i }).click();
 
     await page.waitForURL(/\/?\?sort=newest$/);
     await expect(page.getByText(unique, { exact: true })).toBeVisible();
+    await expect(
+      page.getByTestId("video-card").filter({ hasText: unique }).getByTestId("video-tag").filter({ hasText: "e2e" }),
+    ).toBeVisible();
+    await expect(
+      page.getByTestId("video-card").filter({ hasText: unique }).getByTestId("video-tag").filter({ hasText: "regression" }),
+    ).toBeVisible();
   });
 });
