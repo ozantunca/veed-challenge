@@ -1,6 +1,7 @@
 # Veed Challenge
 
 My implementation process for the challenge. This README is written by me.
+I split the project into 5 milestones, 5th of which is completely unrelated to the initial scope. I spent about 5 hours in total. The 5th hour was for the extra feature I added as a tinkering experiment for myself. The feature isn't working as seamless as I initially envisioned it but I'm happy that I tried.
 
 ## Demo
 
