@@ -4,7 +4,23 @@ My implementation process for the challenge. This README is written by me.
 
 ## Tech stack
 
+- Next.js
+- TypeScript
+- Node.js - through Next.js API Routes
+- SQLite - easy to setup, to backup, and to port data for an MVP. I would use something else if scale was a near-term concern
+- Shadcn and Tailwind for UI
+- Zod for schema validation
+
 ## Setup instructions
+
+This project uses `pnpm` so commands below will run a production build.
+
+```sh
+pnpm i
+pnpm build
+pnpm seed # first run only
+pnpm start
+```
 
 ## Future improvements
 
@@ -36,4 +52,4 @@ When there are plans, I save them in the codebase and keep them for a while even
 - debugging if a bug arises from a recent implementation
 - planning follow ups.
 
-I remove those plans after they stop being relevant.
+I remove those plans after they stop being relevant. You can view them under `.cursor/plans`.

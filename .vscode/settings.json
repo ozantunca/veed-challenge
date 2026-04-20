@@ -11,9 +11,9 @@
     "editor.defaultFormatter": "jock.svg"
   },
   "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#0EA5E9",
-    "titleBar.activeForeground": "#ffffff",
-    "titleBar.inactiveBackground": "#0284C7",
-    "titleBar.inactiveForeground": "#BAE6FD"
+    "titleBar.activeBackground": "#96FF1A",
+    "titleBar.activeForeground": "#0B1300",
+    "titleBar.inactiveBackground": "#6FC400",
+    "titleBar.inactiveForeground": "#0B1300"
   }
 }

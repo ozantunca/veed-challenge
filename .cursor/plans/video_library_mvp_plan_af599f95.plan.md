@@ -4,10 +4,10 @@ overview: Bootstrap a TypeScript Next.js full-stack app backed by SQLite via a V
 todos:
   - id: apply-theme-and-scaffold
     content: Apply rgb(150,255,26)-based title bar shades and scaffold Next.js TypeScript app with pnpm, Tailwind, shadcn/ui, Zustand, Zod, react-hook-form, ESLint, and two Vitest configs + Playwright
-    status: pending
+    status: completed
   - id: write-core-docs
     content: Create docs/index.md, docs/roadmap.md, docs/product.md, and docs/decisions.md with vision, architecture, non-goals, and ADR-style decisions
-    status: pending
+    status: completed
   - id: build-sqlite-repository
     content: Set up SQLite (better-sqlite3), seed from videos.json with AUTOINCREMENT starting after last seed ID, and implement a typed VideoRepository interface
     status: pending
@@ -16,10 +16,10 @@ todos:
     status: pending
   - id: build-ui-flows
     content: Implement list page (Server Component) with sort dropdown and create page (client form with react-hook-form + custom chip tag input), wire revalidatePath after create
-    status: pending
+    status: completed
   - id: add-tests
     content: Add unit tests (ID formatting, default generation, sort helper, validation) and Playwright e2e tests for browse/sort and create flows
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -106,12 +106,14 @@ Write docs right after scaffolding so decisions are captured before they drift.
   - After seed, run `UPDATE sqlite_sequence SET seq = 50 WHERE name = 'videos'` so next auto-increment is `51`.
   - Subsequent boots detect an already-seeded DB and skip.
 - `VideoRepository` interface (rough shape):
+
   ```
   interface VideoRepository {
     list(options: { sort: 'newest' | 'oldest' }): Promise<Video[]>
     create(input: CreateVideoInput): Promise<Video>
   }
   ```
+
   - Implementation: `SqliteVideoRepository` in `@/lib/repositories/sqlite-video-repository.ts`.
   - ID helpers in `@/lib/ids.ts`: `toDisplayId(n: number)` returns `v-${n.toString().padStart(3,'0')}`, `fromDisplayId(s: string)` parses back.
   - Domain type `Video` exposes `displayId` (user-facing) and `id` (numeric, internal).
