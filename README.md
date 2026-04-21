@@ -69,7 +69,7 @@ I use AI heavily day to day. In fact, my template project does no include any li
 
 Everything else is set up by running starting-prompt.md during the initial AI conversation. I refrain from installing specific libraries into my template project because all libraries get updated over time and not every project needs every library. It's easier to let AI know how I prefer my projects to be set up and let it do the rest.
 
-I started by adding `videos.json` to a `data` folder and placing a project brief into `starting-prompt.md` (see initial commit).
+The seed dataset lives in `videos.json` at the repo root; the project brief is in `starting-prompt.md` (see initial commit).
 
 I exported all AI conversations under [conversations](./ai-conversations/) folder.
 

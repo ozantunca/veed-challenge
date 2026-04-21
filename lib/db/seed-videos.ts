@@ -19,7 +19,7 @@ type SeedFile = {
 };
 
 export type SeedVideosOptions = {
-  /** Defaults to `data/videos.json` under cwd */
+  /** Defaults to `videos.json` at project root (cwd) */
   jsonPath?: string;
 };
 
@@ -31,7 +31,7 @@ export function seedVideosFromJson(
   options?: SeedVideosOptions,
 ): void {
   const seedPath =
-    options?.jsonPath ?? path.join(process.cwd(), "data", "videos.json");
+    options?.jsonPath ?? path.join(process.cwd(), "videos.json");
 
   const raw = fs.readFileSync(seedPath, "utf8");
   const parsed = JSON.parse(raw) as SeedFile;

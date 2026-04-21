@@ -2,7 +2,7 @@
 
 ## Milestone 1 — MVP (current)
 
-- [x] Local SQLite database; populate with `pnpm seed` from `data/videos.json` (DB files gitignored).
+- [x] Local SQLite database; populate with `pnpm seed` from `videos.json` at repo root (DB files gitignored).
 - [x] Video list in a responsive grid with title, created date, tags, and user-facing IDs.
 - [x] Sort by created date via a dropdown (newest / oldest) reflected in the URL.
 - [x] Create video form with required title and optional tags; defaults for other fields.

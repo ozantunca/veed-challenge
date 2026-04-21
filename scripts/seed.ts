@@ -27,7 +27,7 @@ function main() {
   try {
     migrate(db);
     seedVideosFromJson(db);
-    console.log(`Seeded ${dbPath} from data/videos.json`);
+    console.log(`Seeded ${dbPath} from videos.json`);
   } finally {
     db.close();
   }

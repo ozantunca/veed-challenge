@@ -38,7 +38,6 @@ yarn-error.log*
 
 # sqlite local databases (seed with: pnpm seed)
 /data
-!/data/videos.json
 
 # local blob storage (swap with cloud in production)
 /cloud-storage
