@@ -4,28 +4,28 @@ overview: Implement Milestone 5 as a local one-shot `claude -p` workflow that ge
 todos:
   - id: product-reframe
     content: Reframe app copy from video library to personal creation tool (home empty state, detail CTA, docs/index.md vision).
-    status: in_progress
+    status: completed
   - id: postinstall-hyperframes
     content: Add postinstall script to install Hyperframes skill into ~/.claude/skills/hyperframes/ without committing skill files to this repo.
-    status: pending
+    status: completed
   - id: workspace-contract
     content: Define per-video workspace contract under cloud-storage/video-workspaces/{videoId}/ with deterministic composition output paths.
-    status: pending
+    status: completed
   - id: launch-oneshot-route
     content: Build server-side launch route that runs one-shot `claude -p` in the video workspace and records in-memory job status.
-    status: pending
+    status: completed
   - id: composition-polling
     content: Implement status endpoint that polls for composition readiness and exposes ready/running/error states to the UI.
-    status: pending
+    status: completed
   - id: preview-flow
     content: Add Preview button and backend route to run `hyperframes preview` in the video workspace when composition is ready.
-    status: pending
+    status: completed
   - id: unit-api-tests
     content: Add unit + API tests for prompt generation, launch/status transitions, composition readiness detection, and preview command launch.
-    status: pending
+    status: completed
   - id: docs-and-roadmap
     content: Add docs/agent-workflow.md, update docs/index.md + roadmap, add ADR-009/ADR-010, and note e2e/rendering deferrals in README future improvements.
-    status: pending
+    status: completed
 isProject: false
 ---
 

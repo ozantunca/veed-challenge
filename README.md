@@ -1,7 +1,17 @@
 # Veed Challenge
 
 My implementation process for the challenge. This README is written by me.
-I split the project into 5 milestones, 5th of which is completely unrelated to the initial scope. I spent about 5 hours in total. The 5th hour was for the extra feature I added as a tinkering experiment for myself. The feature isn't working as seamless as I initially envisioned it but I'm happy that I tried.
+I split the project into 5 milestones, 5th of which is completely unrelated to the initial scope. I spent about 5 hours in total. The 5th hour was for the extra feature (milestone 5) I added as a tinkering experiment for myself. I eventually realised that the feature was going to be half-baked at best so I decided to cut my losses and remove the feature.
+
+## Milestones
+
+As seen in [Roadmap](./docs/roadmap.md),
+
+- Milestone 1 was MVP. Most of the feature described in the project brief were implemented in this phase.
+- Milestone 2 was accessibility through an overall review and keyboard support.
+- Milestone 3 included edit/delete functionalities for video records along with searching and filtering features on video listing page.
+- Milestone 4 was about uploading and attaching video files to individual video records.
+- Milestone 5 was my personal twist to the project where I wanted to connect Claude/Cursor CLI to generate motion design videos using Hyperframes skill from HeyGen based on video title and description in video records. Handling Claude's and Cursor's output turned out to be a bit more complicated than I expected so I ultimately to decide to scrap this feature. If I had a chance to restart this task, I would spend my time on implementing video playback instead of this initiative.
 
 ## Demo
 
@@ -33,10 +43,11 @@ Blob storage for uploaded video files defaults to `./cloud-storage` (gitignored)
 
 ## Future improvements
 
-- Drizzle for schema and migrations (`lib/db/schema.ts`, `pnpm db:generate`)
 - We can use a more scalable database whether it be SQL or NoSQL. I used SQLite for simplicity and also because I envisioned the product to be a standalone application.
 - Better text search. Possible fuzzy search using Typesense, Elastic, or simply Lunr.js. Also would trigger search requests while typing instead of an explicit "apply" button.
-- I'm not totally happy with filter UI. I think it takes up too much space, especially on mobile. I would try to make it more minimal and hide it on mobile behind a button.
+- I'm not totally happy with filtering UI. I think it takes up too much space, especially on mobile. I would try to make it more minimal and hide it on mobile behind a button.
+- An interface to play videos
+- Analytics, monitoring, and observability when it's getting prepared to be rolled out to real customers.
 
 ## AI usage
 
