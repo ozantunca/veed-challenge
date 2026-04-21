@@ -13,7 +13,6 @@
 
 - [x] Full keyboard support for the tag chip input (focus order, aria labels, escape behavior).
 - [x] Broader accessibility review (contrast, landmarks, reduced motion preferences).
-- [x] Pagination or virtualized grid if the dataset grows beyond comfortable client rendering (deferred: full grid acceptable at current scale; see ADR-007).
 
 ## Milestone 3 — Library features
 
@@ -29,8 +28,8 @@
 
 ## Milestone 5 — Personal creation workflow
 
-- [ ] Reframe the app from "video library only" to a personal video creation + management tool.
-- [x] Add a `description` field to the video schema and UI so agent prompts have richer context.
-- [ ] Add a new `pnpm` setup command for local coding-agent workflows (Cursor Agent CLI / Claude Code) with Hyperframes skill.
-- [ ] Add a UI action to launch the selected coding agent with skill, title, and description.
-- [ ] Design and implement a handoff flow to import generated video files back into storage and attach them to the originating video record.
+- [ ] Reframe the app toward a personal video creation + management tool (copy, docs, video detail workflow).
+- [ ] Add a `description` field to the video schema and UI so agent prompts have richer context.
+- [ ] Bootstrap Hyperframes Claude skill path via `pnpm i` / `postinstall` (optional `VEED_HYPERFRAMES_SKILL_GIT` clone; stub otherwise) — see [agent-workflow](./agent-workflow.md).
+- [ ] One-shot **`claude -p`** from the UI with title/description/tags; poll until `composition/index.html` is ready; **`hyperframes preview`** opens the browser (no render/export in this milestone).
+- [ ] Deferred: handoff to import rendered video files into attachments (revisit after a render pipeline exists).

@@ -17,6 +17,16 @@ As seen in [Roadmap](./docs/roadmap.md),
 
 View the running version on [veed.ozantunca.com](https://veed.ozantunca.com).
 
+Screenshots (1440×900 viewport) from production:
+
+| Screen                                    | Preview                                                  |
+| ----------------------------------------- | -------------------------------------------------------- |
+| Home — video library                      | ![Home — video library](./docs/images/demo-home.png)     |
+| Home — filtered (`title` contains “Demo”) | ![Home — filtered](./docs/images/demo-home-filtered.png) |
+| New video                                 | ![New video](./docs/images/demo-new-video.png)           |
+| Edit video                                | ![Edit video](./docs/images/demo-edit-video.png)         |
+| Video view                                | ![Video view](./docs/images/demo-video-view.png)         |
+
 ## Tech stack
 
 - Next.js
@@ -35,7 +45,7 @@ This project uses `pnpm` so commands below will run a production build.
 ```sh
 pnpm i
 pnpm build # important for database migration
-pnpm seed # for first one only
+pnpm seed # for first run only
 pnpm start
 ```
 
@@ -61,7 +71,7 @@ Everything else is set up by running starting-prompt.md during the initial AI co
 
 I started by adding `videos.json` to a `data` folder and placing a project brief into `starting-prompt.md` (see initial commit).
 
-I exported all AI conversations under [conversations](/ai-conversations/) folder.
+I exported all AI conversations under [conversations](./ai-conversations/) folder.
 
 ### Workflow
 
