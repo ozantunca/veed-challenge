@@ -37,10 +37,8 @@ yarn-error.log*
 *.tsbuildinfo
 
 # sqlite local databases (seed with: pnpm seed)
-/data/*.db
-/data/*.db-wal
-/data/*.db-shm
-/data/e2e-cloud-storage
+/data
+!/data/videos.json
 
 # local blob storage (swap with cloud in production)
 /cloud-storage
