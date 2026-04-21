@@ -3,6 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -12,7 +22,7 @@ type Props = {
 
 export function VideoDeleteButton({ videoId, title }: Props) {
   const router = useRouter();
-  const [confirming, setConfirming] = useState(false);
+  const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,58 +38,56 @@ export function VideoDeleteButton({ videoId, title }: Props) {
         setError(body?.error?.message ?? "Could not delete");
         return;
       }
-      setConfirming(false);
+      setOpen(false);
       router.refresh();
     } finally {
       setBusy(false);
     }
   }
 
-  if (!confirming) {
-    return (
-      <Button
-        type="button"
-        size="sm"
-        variant="outline"
-        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-        onClick={() => setConfirming(true)}
-      >
-        Delete
-      </Button>
-    );
+  function onOpenChange(next: boolean) {
+    setOpen(next);
+    if (!next) setError(null);
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="max-w-[200px] truncate text-xs text-muted-foreground">
-        Delete “{title}”?
-      </span>
-      <Button
-        type="button"
-        size="sm"
-        variant="destructive"
-        disabled={busy}
-        onClick={() => void onDelete()}
-      >
-        {busy ? "…" : "Confirm"}
-      </Button>
-      <Button
-        type="button"
-        size="sm"
-        variant="ghost"
-        disabled={busy}
-        onClick={() => {
-          setConfirming(false);
-          setError(null);
-        }}
-      >
-        Cancel
-      </Button>
-      {error ? (
-        <span className="text-xs text-destructive" role="alert">
-          {error}
-        </span>
-      ) : null}
-    </div>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogTrigger asChild>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+        >
+          Delete
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete this video?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This will permanently remove{" "}
+            <span className="font-medium text-foreground">{title}</span> and its
+            attachments. This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        {error ? (
+          <p className="text-destructive text-sm" role="alert">
+            {error}
+          </p>
+        ) : null}
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={busy}>Cancel</AlertDialogCancel>
+          <Button
+            type="button"
+            variant="destructive"
+            disabled={busy}
+            onClick={() => void onDelete()}
+          >
+            {busy ? "Deleting…" : "Delete video"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
